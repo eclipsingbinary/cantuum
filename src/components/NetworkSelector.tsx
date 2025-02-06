@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled'
 import { Network } from '../types/networks'
 import { useState } from 'react'
@@ -65,7 +66,7 @@ const IconWrapper = styled.div`
 interface NetworkSelectorProps {
   networks: Network[];
   onSelect: (network: Network) => void;
-  isConnecting?: boolean;
+  isConnecting: boolean;
 }
 
 export function NetworkSelector({ networks, onSelect, isConnecting }: NetworkSelectorProps) {

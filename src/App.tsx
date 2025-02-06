@@ -14,14 +14,14 @@ const BackgroundVideo = styled.video`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(.5);
+  transform: translate(-50%, -50%) scale(.8);
   min-width: 100%;
   min-height: 100%;
   width: auto;
   height: auto;
   z-index: -1;
   object-fit: cover;
-  opacity: 1;
+  opacity: 0.4;
   background-color: #000;
 `;
 

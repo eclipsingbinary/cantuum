@@ -42,20 +42,34 @@ export interface Artist {
 
 export interface Song {
   id: string;
-  title: string;
   artistId: string;
-  price: number;
+  title: string;
+  price: string;
+  audioUrl: string;
+  thumbnailUrl: string;
 }
 
 // Mock data
 export const mockArtists: Artist[] = [
   { id: '1', name: 'Artist 1' },
   { id: '2', name: 'Artist 2' },
-  { id: '3', name: 'Artist 3' },
 ];
 
 export const mockSongs: Song[] = [
-  { id: '1', title: 'Song 1', artistId: '1', price: 0.001 },
-  { id: '2', title: 'Song 2', artistId: '1', price: 0.001 },
-  { id: '3', title: 'Song 3', artistId: '2', price: 0.001 },
+  {
+    id: '1',
+    artistId: '1',
+    title: 'Song 1',
+    price: '0.1',
+    audioUrl: 'https://example.com/song1.mp3',
+    thumbnailUrl: 'https://example.com/thumb1.jpg'
+  },
+  {
+    id: '2',
+    artistId: '2',
+    title: 'Song 2',
+    price: '0.1',
+    audioUrl: 'https://example.com/song2.mp3',
+    thumbnailUrl: 'https://example.com/thumb2.jpg'
+  },
 ];
