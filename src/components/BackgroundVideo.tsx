@@ -16,7 +16,7 @@ const Video = styled.video`
 export function BackgroundVideo() {
   return (
     <Video autoPlay muted loop playsInline>
-      <source src="/eclipse.mp4" type="video/mp4" />
+      <source src="/cantuum-bg.mp4" type="video/mp4" />
     </Video>
   );
 } 

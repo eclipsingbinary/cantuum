@@ -9,6 +9,15 @@ export type NetworkType =
   | 'optimism'    // Optimism
   | 'arbitrum'    // Arbitrum One
   | 'base'        // Base
+  | 'dot'
+  | 'eth'
+  | 'ada'
+  | 'ksm'
+  | 'algo'
+  | 'xtz'
+  | 'sol'
+  | 'btc'
+  | 'avax'
 
 export interface Network {
   id: NetworkType;

@@ -1,6 +1,6 @@
-# Eclipse Jukebox (Rust Version)
+# Cantuum
 
-A web3-enabled jukebox application that allows users to play music using cryptocurrency payments. This version is built with TypeScript and Rust, featuring a mesmerizing eclipse animation background.
+A web3-enabled music platform that allows users to play music using cryptocurrency payments. This version is built with TypeScript and Rust, featuring a mesmerizing background animation.
 
 ## 🎵 Features
 

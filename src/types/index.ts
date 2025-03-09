@@ -32,7 +32,7 @@ export interface Payment {
   network: SupportedNetwork;
   fromAddress: string;
   toAddress: string;
-  jukeboxFee: number;
+  platformFee: number;
 }
 
 export interface Artist {

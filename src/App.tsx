@@ -2,13 +2,11 @@
 import { useState, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { Modal, ModalButton } from './components/Modal'
-import { PlayerModal } from './components/PlayerModal'
-import { Artist, Song, mockArtists, mockSongs } from './types'
 import { NetworkSelector } from './components/NetworkSelector'
 import { WalletStatus } from './components/WalletStatus'
 import { SUPPORTED_NETWORKS, Network } from './types/networks'
 import { WalletService } from './services/wallet'
-import { ArtistModal } from './components/ArtistModal'
+import { RegisterArtistForm } from './components/RegisterArtistForm'
 
 const BackgroundVideo = styled.video`
   position: fixed;
@@ -47,26 +45,26 @@ const Title = styled.h1`
   font-size: 2rem;
 `
 
-const TitleEclipse = styled.span`
+const TitleCantuum = styled.span`
   font-family: 'spincycle', monospace;
   color: ${({ theme }) => theme.colors.primary};
   text-transform: uppercase;
   letter-spacing: 1px;
 `
 
-const TitleJukeBox = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+const RegisterButton = styled(ModalButton)`
+  margin-right: 10px;
+  width: auto;
+  padding: 8px 16px;
 `
 
-const ButtonContainer = styled.div`
+const WalletContainer = styled.div`
   position: absolute;
-  left: 20px;
-  top: 30%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 250px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  text-align: center;
 `
 
 interface WalletState {
@@ -74,22 +72,18 @@ interface WalletState {
   address: string | null;
   network: Network | null;
   isConnecting: boolean;
+  isRegisteredArtist: boolean;
 }
 
 function App() {
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
-  const [isArtistModalOpen, setIsArtistModalOpen] = useState(false);
-  const [isSongModalOpen, setIsSongModalOpen] = useState(false);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   
-  // Add wallet state
   const [walletState, setWalletState] = useState<WalletState>({
     isConnected: false,
     address: null,
     network: null,
-    isConnecting: false
+    isConnecting: false,
+    isRegisteredArtist: false
   });
 
   const walletService = new WalletService();
@@ -111,7 +105,8 @@ function App() {
         isConnected: true,
         address: connection.address,
         network: network,
-        isConnecting: false
+        isConnecting: false,
+        isRegisteredArtist: false
       });
     } catch (error) {
       console.error('Failed to connect wallet:', error);
@@ -119,7 +114,8 @@ function App() {
         isConnected: false,
         address: null,
         network: null,
-        isConnecting: false
+        isConnecting: false,
+        isRegisteredArtist: false
       });
       // TODO: Show error notification
     }
@@ -132,28 +128,13 @@ function App() {
         isConnected: false,
         address: null,
         network: null,
-        isConnecting: false
+        isConnecting: false,
+        isRegisteredArtist: false
       });
     } catch (error) {
       console.error('Failed to disconnect wallet:', error);
       // TODO: Show error notification
     }
-  };
-
-  const handleArtistSelect = (artist: Artist) => {
-    setSelectedArtist(artist);
-    setSelectedSong(null);
-    setIsArtistModalOpen(false);
-  };
-
-  const handleSongSelect = (song: Song) => {
-    setSelectedSong(song);
-    setIsSongModalOpen(false);
-  };
-
-  const handlePayment = () => {
-    setIsPaymentModalOpen(false);
-    setIsPlayerModalOpen(true);
   };
 
   return (
@@ -165,96 +146,53 @@ function App() {
         muted
         playsInline
       >
-        <source src="/assets/videos/EclipsingBinaryLoop.mp4" type="video/mp4" />
+        <source src="/assets/videos/CantaumLoop.mp4" type="video/mp4" />
       </BackgroundVideo>
       
       <Header>
         <Title>
-          <TitleEclipse>eclipse</TitleEclipse>
-          <TitleJukeBox>JukeBox</TitleJukeBox>
+          <TitleCantuum>Cantuum</TitleCantuum>
         </Title>
-        {walletState.isConnected && walletState.address && walletState.network ? (
-          <WalletStatus
-            network={walletState.network}
-            address={walletState.address}
-            onDisconnect={handleDisconnect}
-          />
-        ) : (
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          {walletState.isConnected && !walletState.isRegisteredArtist && (
+            <RegisterButton onClick={() => setIsRegisterModalOpen(true)}>
+              Register As Artist
+            </RegisterButton>
+          )}
+          {walletState.isConnected && walletState.address && walletState.network && (
+            <WalletStatus
+              network={walletState.network}
+              address={walletState.address}
+              onDisconnect={handleDisconnect}
+            />
+          )}
+        </div>
+      </Header>
+
+      {!walletState.isConnected && (
+        <WalletContainer>
           <NetworkSelector
             networks={SUPPORTED_NETWORKS}
             onSelect={handleNetworkSelect}
             isConnecting={walletState.isConnecting}
           />
-        )}
-      </Header>
-      <ButtonContainer>
-        <ModalButton onClick={() => setIsArtistModalOpen(true)}>
-          {selectedArtist ? selectedArtist.name : 'Artist'}
-        </ModalButton>
-        
-        <ModalButton 
-          onClick={() => setIsSongModalOpen(true)}
-          disabled={!selectedArtist}
-        >
-          {selectedSong ? selectedSong.title : 'Song'}
-        </ModalButton>
-        
-        <ModalButton 
-          onClick={() => setIsPaymentModalOpen(true)}
-          disabled={!selectedArtist || !selectedSong}
-        >
-          Insert Coin
-        </ModalButton>
-      </ButtonContainer>
-      
+        </WalletContainer>
+      )}
+
       <Modal
-        isOpen={isArtistModalOpen}
-        onClose={() => setIsArtistModalOpen(false)}
-        title="Select Artist"
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        title="Register As Artist"
       >
-        <ArtistModal
-          artists={mockArtists}
-          onSelect={handleArtistSelect}
-          onClose={() => setIsArtistModalOpen(false)}
+        <RegisterArtistForm 
+          onSubmit={(data) => {
+            console.log('Form submitted:', data);
+            setIsRegisterModalOpen(false);
+          }}
+          walletAddress={walletState.address || ''}
+          network={walletState.network || SUPPORTED_NETWORKS[0]}
         />
       </Modal>
-      
-      <Modal
-        isOpen={isSongModalOpen}
-        onClose={() => setIsSongModalOpen(false)}
-        title="Select Song"
-      >
-        {mockSongs
-          .filter(song => song.artistId === selectedArtist?.id)
-          .map(song => (
-            <ModalButton
-              key={song.id}
-              onClick={() => handleSongSelect(song)}
-            >
-              {song.title}
-            </ModalButton>
-          ))}
-      </Modal>
-      
-      <Modal
-        isOpen={isPaymentModalOpen}
-        onClose={() => setIsPaymentModalOpen(false)}
-        title="Insert Coin"
-      >
-        <div style={{ textAlign: 'center' }}>
-          <p>{selectedArtist?.name}</p>
-          <p>{selectedSong?.title}</p>
-          <p>{selectedSong?.price} JOY</p>
-          <ModalButton onClick={handlePayment}>Pay Now</ModalButton>
-        </div>
-      </Modal>
-
-      <PlayerModal
-        isOpen={isPlayerModalOpen}
-        onClose={() => setIsPlayerModalOpen(false)}
-        artist={selectedArtist}
-        song={selectedSong}
-      />
     </AppContainer>
   );
 }
