@@ -14,6 +14,8 @@ import {
   AVAXIcon
 } from './NetworkIcons'
 import { useDOTWalletConnect } from './WalletConnect/DOTWalletConnect'
+import { useETHWalletConnect } from './WalletConnect/ETHWalletConnect'
+import { useADAWalletConnect } from './WalletConnect/ADAWalletConnect'
 import { RegistrationOptions } from './RegistrationOptions'
 
 const NetworkContainer = styled.div`
@@ -235,9 +237,39 @@ export const NetworkSelector: React.FC<NetworkSelectorProps> = ({
     }
   });
 
+  const ethWallet = useETHWalletConnect({
+    onConnect: (address) => {
+      setConnectedAddress(address);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setShowRegistration(true);
+      }, 1000);
+    },
+    onError: (error) => {
+      console.error('ETH wallet connection error:', error.message);
+    }
+  });
+
+  const adaWallet = useADAWalletConnect({
+    onConnect: (address) => {
+      setConnectedAddress(address);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setShowRegistration(true);
+      }, 1000);
+    },
+    onError: (error) => {
+      console.error('ADA wallet connection error:', error.message);
+    }
+  });
+
   const handleNetworkSelect = async (network: Network) => {
     if (network.id === 'dot') {
       await dotWallet.connectWallet();
+    } else if (network.id === 'eth') {
+      await ethWallet.connectWallet();
+    } else if (network.id === 'ada') {
+      await adaWallet.connectWallet();
     }
     onSelect(network);
   };

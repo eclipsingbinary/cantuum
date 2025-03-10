@@ -13,10 +13,12 @@
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@polkadot/api": "^15.5.1",
-    "@polkadot/extension-dapp": "^0.58.5",
+    "@polkadot/api": "10.9.1",
+    "@polkadot/extension-dapp": "0.46.5",
+    "@polkadot/util": "12.6.2",
     "@taquito/taquito": "^21.0.2",
     "buffer": "^6.0.3",
+    "stream-browserify": "^3.0.0",
     "ethers": "^6.13.5",
     "ipfs-http-client": "^60.0.1",
     "react": "^18.3.1",
@@ -33,6 +35,6 @@
     "globals": "^15.14.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.2.1"
   }
 }
