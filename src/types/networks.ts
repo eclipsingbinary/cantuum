@@ -18,6 +18,7 @@ export type NetworkType =
   | 'sol'
   | 'btc'
   | 'avax'
+  | 'atom'
 
 export interface Network {
   id: NetworkType;

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { NetworkType, Network } from '../types/networks'
 import { 
   DOTIcon, 
@@ -11,11 +11,14 @@ import {
   XTZIcon,
   SOLIcon,
   BTCIcon,
-  AVAXIcon
+  AVAXIcon,
+  ATOMIcon
 } from './NetworkIcons'
 import { useDOTWalletConnect } from './WalletConnect/DOTWalletConnect'
 import { useETHWalletConnect } from './WalletConnect/ETHWalletConnect'
 import { useADAWalletConnect } from './WalletConnect/ADAWalletConnect'
+import { useXTZWalletConnect } from './WalletConnect/XTZWalletConnect'
+import { useSOLWalletConnect } from './WalletConnect/SOLWalletConnect'
 import { RegistrationOptions } from './RegistrationOptions'
 
 const NetworkContainer = styled.div`
@@ -173,16 +176,6 @@ const EXAMPLE_NETWORKS: Network[] = [
     explorerUrl: 'https://kusama.subscan.io/',
   },
   {
-    id: 'algo' as NetworkType,
-    name: 'ALGO',
-    token: 'ALGO',
-    chainName: 'Algorand',
-    icon: ALGOIcon,
-    walletName: 'MyAlgo',
-    walletUrl: 'https://wallet.myalgo.com/',
-    explorerUrl: 'https://algoexplorer.io/',
-  },
-  {
     id: 'xtz' as NetworkType,
     name: 'XTZ',
     token: 'XTZ',
@@ -211,6 +204,26 @@ const EXAMPLE_NETWORKS: Network[] = [
     walletName: 'Core',
     walletUrl: 'https://core.app/',
     explorerUrl: 'https://snowtrace.io/',
+  },
+  {
+    id: 'algo' as NetworkType,
+    name: 'ALGO',
+    token: 'ALGO',
+    chainName: 'Algorand',
+    icon: ALGOIcon,
+    walletName: 'MyAlgo',
+    walletUrl: 'https://wallet.myalgo.com/',
+    explorerUrl: 'https://algoexplorer.io/',
+  },
+  {
+    id: 'atom' as NetworkType,
+    name: 'ATOM',
+    token: 'ATOM',
+    chainName: 'Cosmos',
+    icon: ATOMIcon,
+    walletName: 'Keplr',
+    walletUrl: 'https://www.keplr.app/',
+    explorerUrl: 'https://www.mintscan.io/cosmos',
   }
 ];
 
@@ -223,55 +236,86 @@ export const NetworkSelector: React.FC<NetworkSelectorProps> = ({
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
+  const [currentNetwork, setCurrentNetwork] = useState<NetworkType | null>(null);
+  const [isConnectingNetwork, setIsConnectingNetwork] = useState(false);
+
+  // Reset connection state
+  const resetConnectionState = useCallback(() => {
+    setConnectedAddress(null);
+    setCurrentNetwork(null);
+    setIsAnimating(false);
+    setShowRegistration(false);
+  }, []);
+
+  const handleConnect = useCallback((address: string, network: NetworkType) => {
+    setConnectedAddress(address);
+    setCurrentNetwork(network);
+    setIsAnimating(true);
+    setIsConnectingNetwork(false);
+    setTimeout(() => {
+      setShowRegistration(true);
+    }, 1000);
+  }, []);
+
+  const handleError = useCallback((error: Error) => {
+    console.error('Wallet connection error:', error.message);
+    setIsConnectingNetwork(false);
+    resetConnectionState();
+  }, [resetConnectionState]);
 
   const dotWallet = useDOTWalletConnect({
-    onConnect: (address) => {
-      setConnectedAddress(address);
-      setIsAnimating(true);
-      setTimeout(() => {
-        setShowRegistration(true);
-      }, 1000);
-    },
-    onError: (error) => {
-      console.error('DOT wallet connection error:', error.message);
-    }
+    onConnect: (address, network) => handleConnect(address, network),
+    onError: handleError,
+    network: selectedNetwork?.id || 'dot'
   });
 
   const ethWallet = useETHWalletConnect({
-    onConnect: (address) => {
-      setConnectedAddress(address);
-      setIsAnimating(true);
-      setTimeout(() => {
-        setShowRegistration(true);
-      }, 1000);
-    },
-    onError: (error) => {
-      console.error('ETH wallet connection error:', error.message);
-    }
+    onConnect: (address) => handleConnect(address, 'eth'),
+    onError: handleError
   });
 
   const adaWallet = useADAWalletConnect({
-    onConnect: (address) => {
-      setConnectedAddress(address);
-      setIsAnimating(true);
-      setTimeout(() => {
-        setShowRegistration(true);
-      }, 1000);
-    },
-    onError: (error) => {
-      console.error('ADA wallet connection error:', error.message);
-    }
+    onConnect: (address) => handleConnect(address, 'ada'),
+    onError: handleError
+  });
+
+  const xtzWallet = useXTZWalletConnect({
+    onConnect: (address) => handleConnect(address, 'xtz'),
+    onError: handleError
+  });
+
+  const solWallet = useSOLWalletConnect({
+    onConnect: (address) => handleConnect(address, 'sol'),
+    onError: handleError
   });
 
   const handleNetworkSelect = async (network: Network) => {
-    if (network.id === 'dot') {
-      await dotWallet.connectWallet();
-    } else if (network.id === 'eth') {
-      await ethWallet.connectWallet();
-    } else if (network.id === 'ada') {
-      await adaWallet.connectWallet();
+    // Prevent multiple concurrent connection attempts
+    if (isConnectingNetwork) {
+      return;
     }
+
+    setIsConnectingNetwork(true);
+    resetConnectionState();
+    setCurrentNetwork(network.id);
     onSelect(network);
+    
+    try {
+      if (network.id === 'dot' || network.id === 'ksm') {
+        await dotWallet.connectWallet();
+      } else if (network.id === 'eth') {
+        await ethWallet.connectWallet();
+      } else if (network.id === 'ada') {
+        await adaWallet.connectWallet();
+      } else if (network.id === 'xtz') {
+        await xtzWallet.connectWallet();
+      } else if (network.id === 'sol') {
+        await solWallet.connectWallet();
+      }
+    } catch (error) {
+      console.error(`Failed to connect to ${network.name}:`, error);
+      handleError(error instanceof Error ? error : new Error(`Failed to connect to ${network.name}`));
+    }
   };
 
   const handleRegistrationOption = (option: 'artist' | 'user' | 'listener') => {
@@ -312,7 +356,7 @@ export const NetworkSelector: React.FC<NetworkSelectorProps> = ({
             {EXAMPLE_NETWORKS.map(network => (
               <NetworkOption
                 key={network.id}
-                isSelected={selectedNetwork?.id === network.id}
+                isSelected={currentNetwork === network.id}
                 onClick={() => handleNetworkSelect(network)}
               >
                 <network.icon width={20} height={20} />

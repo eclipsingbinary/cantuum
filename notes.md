@@ -1545,8 +1545,92 @@ This setup implements TypeScript project references, enabling efficient builds t
   - Develop transaction handling system
   - Create wallet status indicators
 
----
+## Development Notes
 
-<!-- Template for new entries:
-// ... existing code ...
--->
+## Wallet Integration Progress (2024-03-11)
+
+### Completed Integrations
+1. **Tezos (XTZ)**
+   - Implemented using Beacon protocol
+   - Temple wallet support
+   - Mainnet connection
+   - Clean error handling
+   - Network switching support
+
+2. **Solana (SOL)**
+   - Phantom wallet integration
+   - Direct public key retrieval
+   - Simplified connection flow
+   - Error state management
+   - Connection state cleanup
+
+### Next Steps for Wallet Integration
+1. **Bitcoin Lightning**
+   - Evaluate LNURL vs WebLN standards
+   - Consider QR-based connection flow
+   - Research non-email requiring wallet options
+   - Plan universal wallet support
+
+2. **Remaining Networks**
+   - AVAX (Core wallet)
+   - ALGO (MyAlgo)
+   - ATOM (Keplr)
+
+### Technical Improvements Made
+1. **Connection State Management**
+   - Added cleanup for previous connections
+   - Prevented multiple concurrent connections
+   - Centralized error handling
+   - Improved state reset logic
+
+2. **User Experience**
+   - Clear error messages
+   - Network switching protection
+   - Connection status indicators
+   - Registration flow triggers
+
+## Wallet Registration Flow
+- When a wallet connects, the system should check if it's associated with an existing artist or user profile
+- For new wallets (not associated with any profile):
+  - Show the registration flow (artist/user/listener selection)
+  - Allow creation of new artist or user profiles
+- For existing wallets:
+  - Skip registration flow
+  - Direct user straight to their personalized UX experience based on their profile type (artist/user)
+  - This will be implemented when we create the artist profiles feature
+
+## Implementation TODOs
+- [ ] Create backend endpoint to check if wallet address has existing profile
+- [ ] Add profile type check before showing registration options
+- [ ] Implement direct routing to personalized UX for existing profiles
+- [ ] Create artist profile management system
+- [ ] Add wallet-to-profile association storage
+
+## Supported Networks
+Current implementation includes:
+- BTC (Bitcoin)
+- DOT (Polkadot)
+- ETH (Ethereum)
+- ADA (Cardano)
+- KSM (Kusama)
+- XTZ (Tezos)
+- SOL (Solana)
+- AVAX (Avalanche)
+- ALGO (Algorand)
+- ATOM (Cosmos)
+
+## Known Issues & Considerations
+1. **Lightning Network Integration**
+   - Need to evaluate wallet options
+   - Consider LNURL for broader compatibility
+   - Balance email requirement vs usability
+
+2. **Network Switching**
+   - Need to handle disconnection cleanly
+   - Consider persistent connections
+   - Manage multiple active connections
+
+3. **Error Handling**
+   - Standardize error messages
+   - Improve user feedback
+   - Add recovery flows

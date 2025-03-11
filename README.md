@@ -13,11 +13,16 @@ A decentralized music platform that functions as a pure interface between artist
 ## 🎵 Key Features
 
 ### Multi-Chain Wallet Integration
-- Bitcoin (Lightning Network)
-- Polkadot (Asset Hub)
-- Ethereum (Optimism)
-- Cardano (Coming soon)
-- Additional networks planned: Kusama, Algorand, Tezos, Solana, Avalanche
+- **Polkadot (DOT)**: Using Polkadot.js extension
+- **Ethereum (ETH)**: MetaMask integration
+- **Cardano (ADA)**: Nami wallet support
+- **Kusama (KSM)**: Via Polkadot.js extension
+- **Tezos (XTZ)**: Using Temple wallet via Beacon protocol
+- **Solana (SOL)**: Phantom wallet integration
+- **Bitcoin (BTC)**: Lightning Network integration (in progress)
+- **Avalanche (AVAX)**: Core wallet (pending)
+- **Algorand (ALGO)**: MyAlgo wallet (pending)
+- **Cosmos (ATOM)**: Keplr wallet (pending)
 
 ### Content Management
 - Decentralized storage options:
@@ -110,3 +115,59 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Documentation](https://docs.cantuum.com) (Coming soon)
 - [Community](https://discord.gg/cantuum) (Coming soon)
 - [Twitter](https://twitter.com/cantuum) (Coming soon)
+
+## Development Status
+
+### Completed
+- Basic application structure
+- Theme system implementation
+- Network selection interface
+- Wallet connection system
+- Multiple wallet integrations (DOT, ETH, ADA, KSM, XTZ, SOL)
+- Registration flow foundation
+
+### In Progress
+- Bitcoin Lightning integration
+- Profile management system
+- Content storage integration
+- Artist verification system
+
+### Planned
+- Remaining wallet integrations (AVAX, ALGO, ATOM)
+- Content player interface
+- Payment processing
+- Artist dashboard
+- Listener interface
+
+## Getting Started
+
+### Prerequisites
+- Node.js
+- npm or yarn
+- Web browser with wallet extensions installed
+
+### Installation
+```bash
+# Clone the repository
+git clone [repository-url]
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Supported Wallets
+- Polkadot.js Extension
+- MetaMask
+- Nami
+- Temple
+- Phantom
+- More coming soon...
+
+## Contributing
+Contributions are welcome! Please read our contributing guidelines for details.
+
+## License
+[License details to be added]

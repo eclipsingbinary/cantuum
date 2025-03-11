@@ -8,6 +8,7 @@ import btcIcon from '../assets/icons/btc-icon.svg';
 import ethIcon from '../assets/icons/eth-icon.svg';
 import solIcon from '../assets/icons/sol-icon.svg';
 import avaxIcon from '../assets/icons/avax-icon.svg';
+import atomIcon from '../assets/icons/atom-icon.svg';
 
 interface IconProps {
   width?: number;
@@ -81,4 +82,19 @@ export const SOLIcon: React.FC<IconProps> = ({ width = 24, height = 24 }) => (
 
 export const AVAXIcon: React.FC<IconProps> = ({ width = 24, height = 24 }) => (
   <img src={avaxIcon} width={width} height={height} alt="AVAX" />
+);
+
+export const ATOMIcon: React.FC<IconProps> = ({ width = 24, height = 24 }) => (
+  <div style={{ 
+    background: 'white', 
+    borderRadius: '50%', 
+    padding: '2px',
+    width: width,
+    height: height,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }}>
+    <img src={atomIcon} width={width - 4} height={height - 4} alt="ATOM" />
+  </div>
 ); 
