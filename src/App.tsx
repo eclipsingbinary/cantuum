@@ -7,6 +7,7 @@ import { WalletStatus } from './components/WalletStatus'
 import { SUPPORTED_NETWORKS, Network } from './types/networks'
 import { WalletService } from './services/wallet'
 import { RegisterArtistForm } from './components/RegisterArtistForm'
+import logo from './assets/logos/cantuum_logo_white.png'
 
 const BackgroundVideo = styled.video`
   position: fixed;
@@ -38,18 +39,17 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 40px 0;
 `
 
-const Title = styled.h1`
-  margin: 0;
-  font-size: 2rem;
-`
+const Logo = styled.img`
+  height: 160px;
+  width: auto;
+  transition: transform 0.3s ease;
 
-const TitleCantuum = styled.span`
-  font-family: 'spincycle', monospace;
-  color: ${({ theme }) => theme.colors.primary};
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  &:hover {
+    transform: scale(1.05);
+  }
 `
 
 const RegisterButton = styled(ModalButton)`
@@ -150,9 +150,7 @@ function App() {
       </BackgroundVideo>
       
       <Header>
-        <Title>
-          <TitleCantuum>Cantuum</TitleCantuum>
-        </Title>
+        <Logo src={logo} alt="Cantuum" />
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           {walletState.isConnected && !walletState.isRegisteredArtist && (
             <RegisterButton onClick={() => setIsRegisterModalOpen(true)}>

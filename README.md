@@ -1,5 +1,9 @@
 # Cantuum
 
+<p align="center">
+  <img src="src/assets/logos/cantuum_logo_white.png" alt="Cantuum Logo" width="300"/>
+</p>
+
 A decentralized peer-to-peer music streaming platform that connects artists directly with listeners, eliminating traditional platform intermediation. Built with modern web technologies and blockchain integration, Cantuum enables direct music streaming and monetization while operating as a public good with no middleman fees.
 
 ## 🎯 Core Philosophy

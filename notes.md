@@ -1547,6 +1547,32 @@ This setup implements TypeScript project references, enabling efficient builds t
 
 ## Development Notes
 
+## UI Layout (2024-03-11)
+
+### Current Layout Structure
+- Header:
+  - Logo positioned on left (160px height)
+  - Wallet status and register button appear on right when connected
+  - 40px padding top/bottom
+  - Clean flex layout with space-between
+
+### Pre-Connection State
+- Network selector centered in page
+- Absolute positioning with transform for perfect centering
+- 300px width for wallet container
+- Clean minimal interface
+
+### Connected State
+- Wallet address displays in header
+- Register as Artist button appears when not registered
+- Modal form for artist registration
+
+### Styling Details
+- Subtle hover effects on logo (scale 1.05)
+- Smooth transitions (0.3s ease)
+- Background video with 0.4 opacity
+- Proper spacing and alignment throughout
+
 ## Wallet Integration Progress (2024-03-11)
 
 ### Completed Integrations
