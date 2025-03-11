@@ -1,10 +1,10 @@
 # Cantuum
 
-A decentralized music platform that functions as a pure interface between artists and listeners, eliminating traditional platform intermediation. Built with modern web technologies and blockchain integration, Cantuum operates as a public good with no middleman fees.
+A decentralized peer-to-peer music streaming platform that connects artists directly with listeners, eliminating traditional platform intermediation. Built with modern web technologies and blockchain integration, Cantuum enables direct music streaming and monetization while operating as a public good with no middleman fees.
 
 ## 🎯 Core Philosophy
 
-- **Pure Interface Approach**: Functions solely as a facilitator between artists and listeners
+- **Pure P2P Streaming**: Direct streaming between artists and listeners
 - **No Middleman Fees**: All payments remain peer-to-peer
 - **Artist Control**: Full control over content and payment methods
 - **Public Good**: Built and maintained as a transparent, sustainable public good
